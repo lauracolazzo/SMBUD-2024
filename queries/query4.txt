@@ -1,0 +1,38 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$match":{
+            "$and":[
+                {"start_time":{"$gte":ISODate("2022-12-01T00:00:00Z")}},
+                {"start_time":{"$lte":ISODate("2022-12-31T23:59:59Z")}}
+            ]}
+    },
+    {
+        "$group": {
+            "_id": {"week_num":{"$week":"$start_time"}},
+            "rides_count":{"$sum":1},
+            "week_start":{"$min":"$start_time"},
+            "week_end":{"$max":"$start_time"}   
+        }
+    },
+    {
+        "$project":{
+            "_id":1,
+            "rides_count":1,
+            "number_of_days":{
+                "$add":[
+                    1,
+                    {"$subtract":[
+                        {"$dayOfYear":"$week_end"},
+                        {"$dayOfYear":"$week_start"}]}]
+            },
+            "week_start":{
+                "$dateToString":{
+                    "format":"%Y-%m-%d","date":"$week_start"}},
+            "week_end":{
+                "$dateToString":{
+                    "format":"%Y-%m-%d","date":"$week_end"}}
+        }
+    },
+    {
+        "$sort":{"_id.week_num":1}
+    }])

@@ -1,0 +1,13 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$group":{
+            "_id":{
+                "user_cat":"$user_category",
+                "bike_type":"$bike_type"},
+            "rides_count_per_user_per_bike":{"$sum":1}
+        }
+    },
+    {   
+        "$sort":{"_id.user_cat":1}
+    }
+])

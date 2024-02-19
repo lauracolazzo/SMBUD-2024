@@ -1,0 +1,13 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$match":{
+            "ride_length_in_ms":{"$lt":60000}
+        }
+    },
+    {
+        "$group":{
+            "_id": true,
+            "outlier_rides":{"$sum":1}
+        }
+    }
+])

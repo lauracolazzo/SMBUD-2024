@@ -1,0 +1,37 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$facet":{
+            "pickups_pipeline":[
+                { 
+                    "$group":{
+                        "_id":"$start_station_name",
+                        "num_rides":{"$sum":1}
+                    }
+                }
+            ],
+            "dropoffs_pipeline":[
+                { 
+                    "$group":{
+                        "_id":"$end_station_name",
+                        "num_rides":{"$sum":1}
+                    }}
+            ]}
+    },
+    {
+        "$project":{
+            "counts_per_station":
+                {"$concatArrays":[
+                        "$pickups_pipeline",
+                        "$dropoffs_pipeline"
+                    ]}
+        }
+    },
+    {"$unwind":"$counts_per_station"},
+    {
+        "$group":{
+            "_id":"$counts_per_station._id",
+            "total_pickups_dropoffs":{
+                "$sum":"$counts_per_station.num_rides"}}
+	},
+    {"$sort":{"total_pickups_dropoffs":-1}}
+])

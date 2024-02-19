@@ -1,0 +1,30 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$group":{
+    	       "_id":{
+    	           "day_of_week":{"$dayOfWeek":"$start_time"},
+    	           "user_cat":"$user_category"},
+    	       "avg_rides_length_in_mins":{
+                    "$avg":{
+                        "$divide": ["$ride_length_in_ms",60000]
+                    }
+                },
+                "rides_count":{"$sum":1}
+        }
+    },
+    {
+        "$project":{
+            "_id":1,
+            "avg_rides_length_in_mins":{
+                "$ceil":"$avg_rides_length_in_mins"
+            },
+            "rides_count":1
+        }
+    },
+    {   
+        "$sort":{
+            "_id.day_of_week":1,
+            "_id.user_cat":1
+        }
+    }
+])

@@ -1,0 +1,19 @@
+db.bike_sharing_collection.aggregate([
+    {
+        "$group": {
+            "_id":{
+                "start_station":"$start_station_name",
+                "end_station":"$end_station_name"
+            },
+            "rides_count": {"$sum":1}
+        }
+    },
+    {
+        "$sort":{
+            "rides_count":-1
+        }
+    }, 
+    {
+        "$limit":20
+    }
+])
