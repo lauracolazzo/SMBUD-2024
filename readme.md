@@ -1,4 +1,9 @@
-# Systems and Methods for Big and Unstructured Data - Project
+# SMBUD - Project
+This repository provides the material delivered as the final project of the Systems and Methods for Big and Unstructured Data course at Politecnico di Milano.
+
+The project specifications required searching for a publicly available dataset to be analyzed using a NoSQL technology, among the ones studied in the course. The set of technologies that were comprehensively covered from a practical point of view includes Neo4j, MongoDB, and Elasticsearch. Therefore, the objective was to put into practice the knowledge acquired during the course on one of these Database Management Systems (DBMSs), employing its corresponding querying language to extract valuable insights from the gathered data. More specifically, the request was to formulate and execute ten of these queries.
+
+The dataset selected for the analysis belongs to a bike-sharing company based in Chicago and was found on Kaggle at this link. The web page contains a reference to a more complete source, where data updated to November 2023 about rides performed by users of the bike-sharing system is available, divided by month. Whereas the technology adopted for the analysis is MongoDB.
 
 The repository is structured as follows:
 - `dump` folder contains a dump of the database
